@@ -23,3 +23,7 @@ dist-ssr
 
 release
 .vscode/.debug.env
+
+package-lock.json
+
+*.d.ts
