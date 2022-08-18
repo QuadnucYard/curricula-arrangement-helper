@@ -34,8 +34,8 @@ const indexHtml = join(ROOT_PATH.dist, 'index.html')
 
 async function createWindow() {
   win = new BrowserWindow({
-    title: 'Main window',
-    icon: join(ROOT_PATH.public, 'favicon.ico'),
+    title: "Main window",
+    icon: join(ROOT_PATH.public, "favicon.ico"),
     webPreferences: {
       preload,
       // Warning: Enable nodeIntegration and disable contextIsolation is not secure in production
@@ -44,7 +44,12 @@ async function createWindow() {
       nodeIntegration: true,
       contextIsolation: false,
     },
-  })
+    width: 1600,
+    height: 900,
+  });
+  require("@electron/remote/main").initialize();
+  require("@electron/remote/main").enable(win.webContents);
+  win.maximize();
 
   if (app.isPackaged) {
     win.loadFile(indexHtml)
