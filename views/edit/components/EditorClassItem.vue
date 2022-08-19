@@ -60,14 +60,15 @@ defineExpose({ editing });
 </script>
 
 <style lang="scss">
-.editor .class-item {
-  
-  :not(:first-child) {
+.editor {
+  .class-item:not(:first-child) {
     margin-top: 0.3em;
   }
 
-  .el-input__inner {
-    width: 4em;
+  .class-item {
+    .el-input__inner {
+      width: 4em;
+    }
   }
 }
 </style>
