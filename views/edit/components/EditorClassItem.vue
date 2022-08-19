@@ -2,8 +2,8 @@
   <div class="class-item" @mouseenter="showOptions = true" @mouseleave="showOptions = false">
     <div v-if="!editing" style="display: inline-block; margin-right: 4em">
       <span>{{ props.data.no }}</span>
-      <span>{{ props.data.teacher }}</span>
-      <span>{{ props.data.teachingPlace }}</span>
+      <span>{{ props.data.teacher ?? "[未安排]" }}</span>
+      <span>{{ props.data.teachingPlace ?? "[未安排]" }}</span>
     </div>
     <div v-else style="display: inline-block">
       <input v-model="editingData.no" style="width: 3em" />
@@ -55,12 +55,16 @@ const onEditSelf = () => {
 const onDeleteSelf = () => {
   emit("delete");
 };
+
+defineExpose({ editing });
 </script>
 
 <style lang="scss">
 .editor .class-item {
-  margin-top: 0.3em;
-  margin-bottom: 0.3em;
+  
+  :not(:first-child) {
+    margin-top: 0.3em;
+  }
 
   .el-input__inner {
     width: 4em;
