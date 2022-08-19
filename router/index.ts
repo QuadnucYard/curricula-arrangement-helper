@@ -10,7 +10,7 @@ const routes: Array<RouteRecordRaw> = [
         path: "/edit",
         name: "edit",
         meta: { keepAlive: true },
-        component: () => import("@/views/edit-curriculum.vue"),
+        component: () => import("@/views/edit/edit-curriculum.vue"),
       },
     ],
   },
