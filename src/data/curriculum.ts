@@ -1,5 +1,5 @@
-/** 教学班数据 */
-export interface ClassData {
+/** 共用的基本数据 */
+export interface BaseClassData {
   /** 课程号 */
   cid: string;
   /** 课程名 */
@@ -14,7 +14,10 @@ export interface ClassData {
   college: string;
   /** 课程性质 */
   nature: string;
+}
 
+/** 教学班数据 */
+export interface ClassData extends BaseClassData {
   /** 课序号 */
   no: string;
   /** 校区 */
@@ -31,30 +34,25 @@ export interface ClassData {
   teachingPlace: string;
   /** 课容量 */
   capacity: number;
+  /** 课容量（总） */
+  capacityFull: number;
 }
 
 /** 一系列教学班数据组 */
-export interface CourseData {
-  /** 课程号 */
-  cid: string;
-  /** 课程名 */
-  name: string;
-  /** 类别 */
-  cate: string;
-  /** 学时 */
-  hours: number;
-  /** 学分 */
-  credit: number;
-  /** 开课单位 */
-  college: string;
-  /** 课程性质 */
-  nature: string;
-
+export interface CourseData extends BaseClassData {
   tcList: ClassData[];
 }
 
 /** 全体课程数据 */
 export interface CurriculumData {}
+
+/** 课程组 */
+export interface CourseGroupData {
+  /** 名称 */
+  name: string;
+  /** 课程数据 */
+  data: CourseData[];
+}
 
 /*
 分：一般，体育，通选
@@ -66,18 +64,19 @@ export function parseClassData(r: any): ClassData {
     cid: r.KCH,
     name: r.KCM,
     cate: r.KCLB,
-    hours: r.hours,
-    credit: r.XF,
+    hours: parseInt(r.XS),
+    credit: parseFloat(r.XF),
     college: r.KKDW,
     nature: r.KCXZ,
     no: r.KXH,
     campus: r.XQ,
-    restrictedClasses: (<string>r.TJBJ).split(","),
+    restrictedClasses: (<string>r.TJBJ)?.split(","),
     schoolTerm: r.schoolTerm,
     teacher: r.SKJS,
     teacherDetail: r.SKJSLB,
     teachingPlace: r.teachingPlace,
     capacity: r.KRL,
+    capacityFull: r.classCapacity,
   };
   return cd;
 }
@@ -103,7 +102,15 @@ export function parseTJKCRaw(obj: any): CourseData[] {
   return parseTJKC(obj.data.rows);
 }
 
-export function toClassData(cd: CourseData): ClassData {
+export function parseTYKCRaw(obj: any): CourseData[] {
+  return parseTJKC(obj.data.rows);
+}
+
+export function parseXGKCRaw(obj: any): CourseData[] {
+  return (<any[]>obj.data.rows).map(t => toCourseData(parseClassData(t)));
+}
+
+export function toBaseData(cd: BaseClassData): BaseClassData {
   return {
     cid: cd.cid,
     name: cd.name,
@@ -112,6 +119,11 @@ export function toClassData(cd: CourseData): ClassData {
     credit: cd.credit,
     college: cd.college,
     nature: cd.nature,
+  };
+}
+
+export function toClassData(cd: CourseData): ClassData {
+  return Object.assign(toBaseData(cd), {
     no: "",
     campus: "",
     restrictedClasses: [],
@@ -120,5 +132,12 @@ export function toClassData(cd: CourseData): ClassData {
     teacherDetail: "",
     teachingPlace: "",
     capacity: 0,
-  };
+    capacityFull: 0,
+  });
+}
+
+export function toCourseData(cd: ClassData): CourseData {
+  return Object.assign(toBaseData(cd), {
+    tcList: [cd],
+  });
 }
