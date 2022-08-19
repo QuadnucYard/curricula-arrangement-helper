@@ -128,7 +128,7 @@ const onDeleteItem = (tc: ClassData) => {
   }
 
   .course-item {
-    margin: 0.5em;
+    margin: 0.2em;
 
     span:not(:first-child) {
       margin-left: 1em;
