@@ -102,3 +102,23 @@ export function parseTJKC(obj: any[]): CourseData[] {
 export function parseTJKCRaw(obj: any): CourseData[] {
   return parseTJKC(obj.data.rows);
 }
+
+export function toClassData(cd: CourseData): ClassData {
+  return {
+    cid: cd.cid,
+    name: cd.name,
+    cate: cd.cate,
+    hours: cd.hours,
+    credit: cd.credit,
+    college: cd.college,
+    nature: cd.nature,
+    no: "",
+    campus: "",
+    restrictedClasses: [],
+    schoolTerm: "",
+    teacher: "",
+    teacherDetail: "",
+    teachingPlace: "",
+    capacity: 0,
+  };
+}
