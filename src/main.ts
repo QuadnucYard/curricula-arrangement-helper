@@ -1,7 +1,9 @@
 import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
+import store from "./store";
 import ElementPlus from "element-plus";
+import "element-plus/theme-chalk/src/message.scss";
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 // import './samples/node-api'
 
@@ -13,6 +15,7 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 
 app
   .use(router)
+  .use(store)
   .use(ElementPlus)
   .mount("#app")
   .$nextTick(() => {

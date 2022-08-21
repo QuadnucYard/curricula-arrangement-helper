@@ -43,15 +43,20 @@ export interface CourseData extends BaseClassData {
   tcList: ClassData[];
 }
 
-/** 全体课程数据 */
-export interface CurriculumData {}
-
 /** 课程组 */
 export interface CourseGroupData {
   /** 名称 */
   name: string;
   /** 课程数据 */
   data: CourseData[];
+}
+
+/** 全体课程数据 */
+export interface CurriculumData {
+  /** 名称 */
+  name: string;
+  /** 课程组数据 */
+  data: CourseGroupData[];
 }
 
 /*

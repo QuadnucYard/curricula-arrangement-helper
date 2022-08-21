@@ -32,6 +32,9 @@ const preload = join(__dirname, '../preload/index.js')
 const url = `http://${process.env['VITE_DEV_SERVER_HOST']}:${process.env['VITE_DEV_SERVER_PORT']}`
 const indexHtml = join(ROOT_PATH.dist, 'index.html')
 
+import { Menu } from "electron";
+import { createMenu } from "./menu";
+
 async function createWindow() {
   win = new BrowserWindow({
     title: "Main window",
@@ -52,23 +55,26 @@ async function createWindow() {
   win.maximize();
 
   if (app.isPackaged) {
-    win.loadFile(indexHtml)
+    win.loadFile(indexHtml);
   } else {
-    win.loadURL(url)
+    win.loadURL(url);
     // Open devTool if the app is not packaged
-    win.webContents.openDevTools()
+    win.webContents.openDevTools();
   }
 
   // Test actively push message to the Electron-Renderer
-  win.webContents.on('did-finish-load', () => {
-    win?.webContents.send('main-process-message', new Date().toLocaleString())
-  })
+  win.webContents.on("did-finish-load", () => {
+    win?.webContents.send("main-process-message", new Date().toLocaleString());
+  });
 
   // Make all links open with the browser, not with the application
   win.webContents.setWindowOpenHandler(({ url }) => {
-    if (url.startsWith('https:')) shell.openExternal(url)
-    return { action: 'deny' }
-  })
+    if (url.startsWith("https:")) shell.openExternal(url);
+    return { action: "deny" };
+  });
+
+  const menu = Menu.buildFromTemplate(createMenu(win));
+  Menu.setApplicationMenu(menu);
 }
 
 app.whenReady().then(createWindow)
