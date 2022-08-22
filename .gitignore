@@ -26,4 +26,4 @@ release
 
 package-lock.json
 
-*.d.ts
+src/*.d.ts

@@ -5,13 +5,22 @@
       <el-button @click="onOpenInputRaw(1)">推荐课程</el-button>
       <el-button @click="onOpenInputRaw(2)">体育课程</el-button>
       <el-button @click="onOpenInputRaw(3)">通选课</el-button>
-      <input-dialog ref="inputJsonDialog" title="输入课程JSON" :rows="10" @confirm="onInputRawData" />
+      <input-dialog
+        ref="inputJsonDialog"
+        title="输入课程JSON"
+        :rows="10"
+        @confirm="onInputRawData"
+      />
     </div>
   </div>
   <div>
     <el-tabs type="border-card">
-      <el-tab-pane v-for="group in props.data" :label="group.name">
-        <editor-course-group :data="group.data" />
+      <el-tab-pane v-for="(group, index) in props.data" :label="group.name">
+        <editor-course-group
+          :data="props.data[index].data"
+          @change="onChange"
+          @update:data="props.data[index].data = $event"
+        />
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -29,6 +38,7 @@ import {
 import { ElMessage } from "element-plus";
 
 const props = defineProps<{ data: CourseGroupData[] }>();
+const emit = defineEmits(["update:data"]);
 
 const inputJsonDialog = ref();
 
@@ -56,6 +66,11 @@ const onInputRawData = (text: string, type: number) => {
   } catch (e) {
     ElMessage.error("Fail to parse JSON text.\n" + e);
   }
+};
+
+const onChange = () => {
+  console.log(props.data[0].data);
+  emit("update:data", props.data);
 };
 </script>
 

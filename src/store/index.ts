@@ -1,6 +1,6 @@
 import { createStore } from "vuex";
 import { CAHFile } from "@/data/cah-file";
-import array_utils from "@/utils/array-utils";
+import "@/utils/array-extensions";
 
 const store = createStore({
   state: {
@@ -15,7 +15,7 @@ const store = createStore({
       if (payload.path != null) state.activeFile.load();
     },
     closeFile(state) {
-      array_utils.removeOne(state.openFiles, state.activeFile);
+      state.openFiles.removeOne(state.activeFile);
       state.activeFile = null;
     },
   },

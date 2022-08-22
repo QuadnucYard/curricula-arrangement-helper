@@ -46,10 +46,11 @@
     </template>
     <div :key="refreshkey">
       <editor-class-item
-        v-for="tc in props.data.tcList"
+        v-for="(tc, index) in props.data.tcList"
         :ref="setItemRef"
         :key="tc.no"
-        :data="tc"
+        :data="props.data.tcList[index]"
+        @update:data="props.data.tcList[index] = $event"
         @delete="onDeleteItem(tc)"
       />
     </div>
@@ -60,9 +61,10 @@
 import { Delete, Edit, Plus } from "@element-plus/icons-vue";
 import { ClassData, CourseData, toClassData } from "@/data/curriculum";
 import EditorClassItem from "./EditorClassItem.vue";
+import "@/utils/array-extensions";
 
 const props = defineProps<{ data: CourseData }>();
-const emit = defineEmits(["delete"]);
+const emit = defineEmits(["delete", "update:data"]);
 
 const showOptions = ref(false);
 const editing = ref(false);
@@ -91,8 +93,6 @@ onUpdated(() => {
   console.log("updated", itemRefs.value);
 });
 
-const refresh = () => refreshkey.value++;
-
 const onEditSelf = () => {
   editing.value = !editing.value;
   if (editing.value) {
@@ -106,9 +106,9 @@ const onEditSelf = () => {
 };
 
 const onAddItem = () => {
-  props.data.tcList.push(toClassData(props.data));
-  refresh();
-  console.log(itemRefs.value);
+  const tcList = props.data.tcList;
+  tcList.push(toClassData(props.data));
+  props.data.tcList = tcList;
 };
 
 const onDeleteSelf = () => {
@@ -116,8 +116,10 @@ const onDeleteSelf = () => {
 };
 
 const onDeleteItem = (tc: ClassData) => {
-  props.data.tcList.splice(props.data.tcList.indexOf(tc), 1);
-  refresh();
+  const tcList = props.data.tcList;
+  tcList.removeOne(tc);
+  props.data.tcList = tcList;
+  //emit("update:data", props.data);
 };
 </script>
 
