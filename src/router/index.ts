@@ -12,6 +12,12 @@ const routes: Array<RouteRecordRaw> = [
         meta: { keepAlive: true },
         component: () => import("@/views/edit/edit-curriculum.vue"),
       },
+      {
+        path: "/schedule",
+        name: "schedule",
+        meta: { keepAlive: true },
+        component: () => import("@/views/schedule/schedule.vue"),
+      },
     ],
   },
 ];
