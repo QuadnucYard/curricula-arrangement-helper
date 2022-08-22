@@ -1,6 +1,12 @@
 <template>
   <div :key="refreshkey">
-    <editor-course-item v-for="item in pageData" :data="item" @delete="onDeleteItem(item)" />
+    <editor-course-item
+      v-for="(item, index) in pageData"
+      :key="item.cid"
+      :data="pageData[index]"
+      @update:data="pageData[index] = $event"
+      @delete="onDeleteItem(item)"
+    />
     <el-pagination
       v-model:currentPage="currentPage"
       v-model:page-size="pageSize"
@@ -15,9 +21,11 @@
 
 <script setup lang="ts">
 import { CourseData } from "@/data/curriculum";
+import "@/utils/array-extensions";
 import EditorCourseItem from "./EditorCourseItem.vue";
 
 const props = defineProps<{ data: CourseData[] }>();
+const emit = defineEmits(["change", "update:data"]);
 
 const currentPage = ref(1);
 const pageSize = ref(20);
@@ -35,10 +43,9 @@ const refreshPage = () => {
 refreshPage();
 
 const onDeleteItem = (cd: CourseData) => {
-  console.log("del item",cd);
-  props.data.splice(props.data.indexOf(cd), 1);
-  pageData.value.splice(pageData.value.indexOf(cd), 1);
-  refreshkey.value++;
+  pageData.value.removeOne(cd);
+  props.data.removeOne(cd);
+  emit("update:data", props.data);
 };
 </script>
 

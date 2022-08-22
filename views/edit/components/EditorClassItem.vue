@@ -33,7 +33,7 @@ import { Delete, Edit } from "@element-plus/icons-vue";
 import { ClassData } from "@/data/curriculum";
 
 const props = defineProps<{ data: ClassData }>();
-const emit = defineEmits(["delete"]);
+const emit = defineEmits(["delete", "update:data"]);
 
 const showOptions = ref(false);
 const editing = ref(false);
