@@ -19,6 +19,14 @@ export {}; // this file needs to be a module
     };
   }
 
+  if (!Array.prototype.removeAt) {
+    Array.prototype.removeAt = function (index: number): any {
+      let item = this[index];
+      (<Array<any>>this).splice(index, 1);
+      return item;
+    };
+  }
+
   if (!Array.prototype.removeOne) {
     Array.prototype.removeOne = function (item: any | null): boolean {
       let index = (<Array<any>>this).indexOf(item);

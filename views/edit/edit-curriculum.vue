@@ -1,8 +1,8 @@
 <template>
   <div class="editor" v-if="store.state.activeFile">
     <editor-curriculum-tab
-      :data="store.state.activeFile.curricula"
-      @update:data="store.state.activeFile.curricula = $event"
+      :data="store.state.activeFile.curricula.data"
+      @update:data="store.state.activeFile.curricula.data = $event"
     />
   </div>
 </template>

@@ -6,6 +6,7 @@ declare global {
     orderByDescending(propertyExpression: (item: T) => any): T[];
     orderByMany(propertyExpressions: [(item: T) => any]): T[];
     orderByManyDescending(propertyExpressions: [(item: T) => any]): T[];
+    removeAt(index: number): T;
     removeOne(item: T | null): boolean;
     addRange(items: T[]): void;
     removeRange(items: T[]): void;
