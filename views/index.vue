@@ -1,6 +1,6 @@
 <template>
-  <left-menu style="width: 3.7em; float: left" />
-  <div style="margin-left: 3.7em">
+  <left-menu style="width: 48px; float: left" />
+  <div style="margin-left: 48px">
     <top-tabs>
       <router-view />
     </top-tabs>

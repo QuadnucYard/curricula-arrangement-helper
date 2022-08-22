@@ -1,20 +1,38 @@
 <template>
   <nav>
-    <el-icon :size="40" color=" #ecf5ff" @click="nav1">
-      <Edit />
-    </el-icon>
-    <el-icon :size="40" color=" #ecf5ff">
-      <Calendar />
-    </el-icon>
+    <left-menu-button
+      v-for="(item, index) in items"
+      :selected="index == activeIndex"
+      @click="onClick(index)"
+    >
+      <component :is="item.icon" />
+    </left-menu-button>
   </nav>
 </template>
 
 <script setup lang="ts">
 import router from "@/router";
-import { Edit, Calendar } from "@element-plus/icons-vue";
+import LeftMenuButton from "./LeftMenuButton.vue";
 
-function nav1() {
-  router.push({ name: "edit" });
+const items = reactive([
+  {
+    routeName: "edit",
+    icon: "Edit",
+  },
+  {
+    routeName: "schedule",
+    icon: "Calendar",
+  },
+]);
+
+const activeIndex = ref(0);
+
+function onClick(index: number) {
+  console.log(index);
+  if (index != activeIndex.value) {
+    activeIndex.value = index;
+    router.push({ name: items[index].routeName });
+  }
 }
 </script>
 
@@ -24,9 +42,5 @@ nav {
   position: fixed;
   height: 100%;
   text-align: center;
-
-  .el-icon {
-    height: 50px;
-  }
 }
 </style>
