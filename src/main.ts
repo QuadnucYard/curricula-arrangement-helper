@@ -4,6 +4,7 @@ import router from "./router";
 import store from "./store";
 import ElementPlus from "element-plus";
 import "element-plus/theme-chalk/src/message.scss";
+import "element-plus/theme-chalk/src/message-box.scss";
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 // import './samples/node-api'
 

@@ -1,7 +1,9 @@
 <template>
   <left-menu style="width: 3.7em; float: left" />
   <div style="margin-left: 3.7em">
-    <router-view />
+    <top-tabs>
+      <router-view />
+    </top-tabs>
   </div>
 </template>
 
@@ -10,8 +12,9 @@ import { ipcRenderer } from "electron";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import LeftMenu from "./components/LeftMenu.vue";
-import { ElMessage } from "element-plus";
-//import remote from "@electron/remote";
+import { ElMessage, ElMessageBox } from "element-plus";
+import TopTabs from "./components/TopTabs.vue";
+
 const remote = require("@electron/remote");
 
 const router = useRouter();
@@ -20,9 +23,15 @@ router.push({ name: "edit" });
 const store = useStore();
 
 ipcRenderer.on("new-file", async e => {
-  console.log(remote);
-  store.commit("createFile", { path: null });
-    ElMessage.success("创建新文件");
+  ElMessageBox.prompt("Please input curricula name", "New CAH file", {
+    confirmButtonText: "OK",
+    cancelButtonText: "Cancel",
+  })
+    .then(({ value }) => {
+      store.commit("openFile", { path: null, name: value });
+      ElMessage.success("创建新文件");
+    })
+    .catch(() => {});
 });
 
 ipcRenderer.on("open-file", async e => {
@@ -33,7 +42,7 @@ ipcRenderer.on("open-file", async e => {
   });
   console.log(result);
   if (!result.canceled && result.filePaths?.length > 0) {
-    store.commit("createFile", { path: result.filePaths[0] });
+    store.commit("openFile", { path: result.filePaths[0] });
     ElMessage.success("成功打开文件");
   }
 });

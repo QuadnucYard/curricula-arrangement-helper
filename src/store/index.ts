@@ -8,11 +8,17 @@ const store = createStore({
     activeFile: <CAHFile | null>null,
   },
   mutations: {
-    createFile(state, payload: { path: string | null }) {
+    openFile(state, payload: { path: string | null; name: string | null }) {
+      const oldFile = state.openFiles.find(t => t.path === payload.path);
+      if (oldFile && oldFile.path) {
+        state.activeFile = oldFile;
+        return;
+      }
       const newFile = new CAHFile(payload.path);
+      if (payload.name) newFile.curricula.name = payload.name;
       state.activeFile = newFile;
       state.openFiles.push(newFile);
-      if (payload.path != null) state.activeFile.load();
+      console.log("Create", newFile);
     },
     closeFile(state) {
       state.openFiles.removeOne(state.activeFile);

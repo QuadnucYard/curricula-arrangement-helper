@@ -5,12 +5,6 @@
       <el-button @click="onOpenInputRaw(1)">推荐课程</el-button>
       <el-button @click="onOpenInputRaw(2)">体育课程</el-button>
       <el-button @click="onOpenInputRaw(3)">通选课</el-button>
-      <input-dialog
-        ref="inputJsonDialog"
-        title="输入课程JSON"
-        :rows="10"
-        @confirm="onInputRawData"
-      />
     </div>
   </div>
   <div>
@@ -35,37 +29,39 @@ import {
   parseTYKCRaw,
   parseXGKCRaw,
 } from "@/data/curriculum";
-import { ElMessage } from "element-plus";
+import { ElMessage, ElMessageBox } from "element-plus";
 
 const props = defineProps<{ data: CourseGroupData[] }>();
 const emit = defineEmits(["update:data"]);
-
-const inputJsonDialog = ref();
 
 const addTab = (name: string, data: CourseData[] = []) => {
   props.data.push({ name, data });
 };
 
 const onOpenInputRaw = (type: number) => {
-  inputJsonDialog.value.show(type);
-};
-
-const onInputRawData = (text: string, type: number) => {
-  try {
-    switch (type) {
-      case 1:
-        addTab("推荐课程", parseTJKCRaw(JSON.parse(text)));
-        break;
-      case 2:
-        addTab("体育课程", parseTYKCRaw(JSON.parse(text)));
-        break;
-      case 3:
-        addTab("通选课", parseXGKCRaw(JSON.parse(text)));
-        break;
-    }
-  } catch (e) {
-    ElMessage.error("Fail to parse JSON text.\n" + e);
-  }
+  ElMessageBox.prompt(`输入${["推荐", "体育", "通选"][type - 1]}课程JSON`, "导入课程", {
+    confirmButtonText: "OK",
+    cancelButtonText: "Cancel",
+    inputType: "textarea",
+  })
+    .then(({ value }) => {
+      try {
+        switch (type) {
+          case 1:
+            addTab("推荐课程", parseTJKCRaw(JSON.parse(value)));
+            break;
+          case 2:
+            addTab("体育课程", parseTYKCRaw(JSON.parse(value)));
+            break;
+          case 3:
+            addTab("通选课", parseXGKCRaw(JSON.parse(value)));
+            break;
+        }
+      } catch (e) {
+        ElMessage.error("Fail to parse JSON text.\n" + e);
+      }
+    })
+    .catch(() => {});
 };
 
 const onChange = () => {
