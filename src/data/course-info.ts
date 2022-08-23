@@ -27,9 +27,8 @@ export class ClassSession {
   static tpDict = new Map<string, ClassSession[]>();
 
   constructor(
+    public data: ClassData,
     public raw: string[],
-    public cid: string,
-    public cno: string,
     public week: number,
     public day: number,
     public tStart: number,
@@ -43,9 +42,18 @@ export class ClassSession {
     return [base + this.tStart, base + this.tEnd];
   }
 
+  /** 排序键 */
+  get sortingOrder() {
+    return (this.day * 13 + this.tStart) * 17 + this.week;
+  }
+
   /** 持续时间 */
   get span() {
     return this.tEnd - this.tStart + 1;
+  }
+
+  contains(t: number) {
+    return t >= this.tStart && t <= this.tEnd;
   }
 
   /** 解析教学时间地点的字符串 */
@@ -84,7 +92,7 @@ export class ClassSession {
               .slice(0, -1)
               .split("-")
               .map(t => parseInt(t) - 1);
-            arr.push(new ClassSession(s, cd.cid, cd.no, t1, mapDay(s[1]), tStart, tEnd, s[3]));
+            arr.push(new ClassSession(cd, s, t1, mapDay(s[1]), tStart, tEnd, s[3]));
           }
           return arr;
         })
