@@ -67,4 +67,8 @@ ipcRenderer.on("save-file", async e => {
 });
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.el-tabs--border-card > .el-tabs__content {
+  padding: 0;
+}
+</style>

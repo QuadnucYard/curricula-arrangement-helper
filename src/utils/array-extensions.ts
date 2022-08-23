@@ -60,6 +60,12 @@ export {}; // this file needs to be a module
     };
   }
 
+    if (!Array.prototype.empty) {
+      Array.prototype.empty = function (): boolean {
+        return this.length == 0;
+      };
+    }
+
   if (!Array.prototype.orderBy) {
     Array.prototype.orderBy = function (propertyExpression: (item: any) => any) {
       let result = <any>[];

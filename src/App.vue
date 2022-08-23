@@ -5,13 +5,13 @@
 
 <template>
   <!-- <keep-alive> -->
-    <router-view />
+  <router-view />
   <!-- </keep-alive> -->
 </template>
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;

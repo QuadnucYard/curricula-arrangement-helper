@@ -36,6 +36,8 @@ export interface ClassData extends BaseClassData {
   capacity: number;
   /** 课容量（总） */
   capacityFull: number;
+  /** 已选人数 */
+  occupancy: number;
 }
 
 /** 一系列教学班数据组 */
@@ -82,6 +84,7 @@ export function parseClassData(r: any): ClassData {
     teachingPlace: r.teachingPlace,
     capacity: r.KRL,
     capacityFull: r.classCapacity,
+    occupancy: r.YXRS,
   };
   return cd;
 }
@@ -138,6 +141,7 @@ export function toClassData(cd: CourseData): ClassData {
     teachingPlace: "",
     capacity: 0,
     capacityFull: 0,
+    occupancy: 0,
   });
 }
 
