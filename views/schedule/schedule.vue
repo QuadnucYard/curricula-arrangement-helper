@@ -1,5 +1,6 @@
 <template>
   <div>
+    <my-schedule :scheduler="scheduler" />
     <my-selection :src="file.curricula.data" :scheduler="scheduler" />
   </div>
 </template>
@@ -10,12 +11,13 @@ import { TeachingPlaceInfo } from "@/data/course-info";
 import { Scheduler } from "@/data/schedule";
 import { useStore } from "vuex";
 import MySelection from "./components/MySelection.vue";
+import MySchedule from "./components/MySchedule.vue";
 
 const store = useStore();
 
 const file = computed(() => store.state.activeFile as CAHFile);
 
-const scheduler = new Scheduler();
+const scheduler = reactive(new Scheduler());
 scheduler.create(file.value.curricula.data.flatMap(t => t.data));
 </script>
 

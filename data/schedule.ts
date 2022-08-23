@@ -26,11 +26,8 @@ interface EntryType {
 export class Scheduler {
   state: Map<string, SelectionEntry>;
   selected: string[]; // 存所有被选的
-  test: EntryType = {};
 
   constructor() {
-    // 要不还是用object吧
-    this.test["55"] = "";
     this.state = new Map<string, SelectionEntry>();
     this.selected = [];
   }
@@ -115,11 +112,13 @@ export class Scheduler {
       }
     }
     this.setStatus(key, SelectionStatus.Selected);
+    this.selected.push(key);
   }
 
   /** 取消选择 */
   unselect(cd: ClassData) {
     const key = ckey(cd);
+    this.selected.removeOne(key);
     this.setStatus(key, SelectionStatus.None);
     for (const [k, v] of this.state.entries()) {
       if (k == key) continue;
