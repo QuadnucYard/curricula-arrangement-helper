@@ -1,5 +1,5 @@
 <template>
-  <div :class="selected ? 'menu-button selected' : 'menu-button'">
+  <div :class="{ 'menu-button': true, selected }">
     <el-icon :size="30">
       <slot style="margin: auto"></slot>
     </el-icon>
