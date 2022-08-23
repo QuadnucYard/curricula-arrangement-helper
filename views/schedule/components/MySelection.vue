@@ -103,6 +103,7 @@ const onClickClassItem = (cd: ClassData) => {
   margin-right: auto;
   padding: 0;
   background-color: #ecf5ff;
+  max-height: calc(100vh + 40px);
   overflow: auto;
   user-select: none;
   font-size: 90%;

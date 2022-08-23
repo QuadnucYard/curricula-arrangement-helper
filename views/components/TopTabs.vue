@@ -47,4 +47,13 @@ watch(
 );
 </script>
 
-<style lang="scss"></style>
+<style lang="scss" scoped>
+.el-tabs--card {
+  height: calc(100vh - 50px);
+  /* overflow-y: auto; */
+}
+.el-tab-pane {
+  height: calc(100vh - 50px);
+  overflow-y: auto;
+}
+</style>
