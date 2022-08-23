@@ -57,6 +57,7 @@ ipcRenderer.on("save-file", async e => {
       title: "保存",
       properties: ["openFile"],
       filters: [{ name: "CAH File", extensions: ["cah"] }],
+      defaultPath: activeFile.curricula.name,
     });
     if (!result.canceled) {
       activeFile.save(result.filePath);

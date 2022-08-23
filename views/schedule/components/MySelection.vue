@@ -79,7 +79,6 @@ const onClickClassItem = (cd: ClassData) => {
   } else {
     //ElMessage.warning("课程冲突！");
     const formatClassInfo = (cd: ClassData) => `${cd.name}-${cd.no}-${cd.teacher}`;
-    console.log(props.scheduler.getCollisions(cd));
     ElNotification.warning({
       title: "课程冲突",
       message: h("div", null, [
@@ -195,7 +194,7 @@ const onClickClassItem = (cd: ClassData) => {
         margin: 2px;
         &:nth-child(1) {
           background-color: #13c2c2;
-          width: 1em;
+          width: 2em;
           text-align: center;
         }
         &:nth-child(2) {
