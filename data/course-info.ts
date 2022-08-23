@@ -19,37 +19,23 @@ export function ckey(cd: ClassData) {
   return `${cd.cid}-${cd.no}`;
 }
 
-export class ClassSession {
-  raw: string[]; //原始字符串分成的数组
-  cid: string; //课程代号
-  cno: string; //课程代号
-  week: number; //周
-  day; //周几
-  tStart: number; //开始时间
-  tEnd: number; //结束时间
-  classroom: string; //教室
+export function splitkey(key: string): [string, string] {
+  return key.split("-") as [string, string];
+}
 
+export class ClassSession {
   static tpDict = new Map<string, ClassSession[]>();
 
   constructor(
-    raw: string[],
-    cid: string,
-    cno: string,
-    week: number,
-    day: number,
-    tStart: number,
-    tEnd: number,
-    classroom: string
-  ) {
-    this.raw = raw;
-    this.cid = cid;
-    this.cno = cno;
-    this.week = week;
-    this.day = day;
-    this.tStart = tStart;
-    this.tEnd = tEnd;
-    this.classroom = classroom;
-  }
+    public raw: string[],
+    public cid: string,
+    public cno: string,
+    public week: number,
+    public day: number,
+    public tStart: number,
+    public tEnd: number,
+    public classroom: string
+  ) {}
 
   /** 首尾序数，闭区间 */
   get ordinal() {
@@ -123,6 +109,10 @@ export class TeachingPlaceInfo {
       const [tStart, tEnd] = s.ordinal;
       this.bits.setRange(tStart, tEnd);
     }
+  }
+
+  collides(other: ClassData) {
+    return !TeachingPlaceInfo.get(other).bits.and(this.bits).isEmpty();
   }
 
   static get(cd: ClassData) {

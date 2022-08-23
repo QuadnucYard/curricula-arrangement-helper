@@ -11,6 +11,7 @@ declare global {
     addRange(items: T[]): void;
     removeRange(items: T[]): void;
     contains(item: T | null): boolean;
+    empty(): boolean;
   }
   interface String {
     isNullOrEmpty(this: string): boolean;
