@@ -99,9 +99,14 @@ export default defineConfig({
       externals: ["path", /^electron(\/.+)?$/],
     }),
   ],
+
   server: {
     host: pkg.env.VITE_DEV_SERVER_HOST,
     port: pkg.env.VITE_DEV_SERVER_PORT,
+  },
+
+  build: {
+    emptyOutDir: false, // 默认情况下，若 outDir 在 root 目录下，则 Vite 会在构建时清空该目录
   },
 });
 

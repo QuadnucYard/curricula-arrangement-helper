@@ -14,6 +14,14 @@
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "src/**/*.js"],
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "src/**/*.js",
+    "electron-main/**/*.ts",
+    "electron-preload/**/*.ts"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

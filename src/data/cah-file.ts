@@ -1,4 +1,3 @@
-import fsext from "electron-fs-extra";
 import { CurriculumData } from "./curriculum";
 import fs from "fs";
 
@@ -12,7 +11,7 @@ export class CAHFile {
   constructor(path: string | null) {
     this.path = path;
     if (path != null) {
-      const data = fsext.readJsonSync(this.path);
+      const data = JSON.parse(fs.readFileSync(this.path!).toString());
       this.curricula = data.curricula;
     } else {
       this.curricula = { name: "", data: [] };
@@ -23,7 +22,7 @@ export class CAHFile {
   }
 
   load(): void {
-    const data = fsext.readJsonSync(this.path);
+    const data = JSON.parse(fs.readFileSync(this.path!).toString());
     this.curricula = data.curricula;
     this.modified = false;
   }
