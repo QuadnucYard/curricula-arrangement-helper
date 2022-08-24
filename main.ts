@@ -6,6 +6,7 @@ import ElementPlus from "element-plus";
 import "element-plus/theme-chalk/src/message.scss";
 import "element-plus/theme-chalk/src/message-box.scss";
 import "element-plus/theme-chalk/src/notification.scss";
+import "@/styles/index.scss";
 
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 // import './samples/node-api'

@@ -122,7 +122,7 @@ const getShow = (row: number, col: number) => {
   }
   .side-switch {
     position: absolute;
-    right: 2em;
+    left: 2em;
     top: 2em;
     display: block;
 
