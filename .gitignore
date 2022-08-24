@@ -24,3 +24,5 @@ dist-ssr
 *.sw?
 
 package-lock.json
+components.d.ts
+auto-imports.d.ts

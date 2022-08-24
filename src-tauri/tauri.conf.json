@@ -6,8 +6,8 @@
     "distDir": "../dist"
   },
   "package": {
-    "productName": "tauri-app",
-    "version": "0.0.0"
+    "productName": "Curricula Arrangement Helper",
+    "version": "0.1.0"
   },
   "tauri": {
     "allowlist": {
@@ -55,10 +55,11 @@
     "windows": [
       {
         "fullscreen": false,
-        "height": 600,
+        "height": 900,
         "resizable": true,
-        "title": "tauri-app",
-        "width": 800
+        "title": "Curricula Arrangement Helper",
+        "width": 1200,
+        "maximized": true
       }
     ]
   }
