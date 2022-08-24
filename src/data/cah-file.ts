@@ -1,5 +1,5 @@
 import { CurriculumData } from "./curriculum";
-import fs from "fs";
+import { fs } from "@tauri-apps/api";
 
 export class CAHFile {
   path: string | null;
@@ -10,26 +10,21 @@ export class CAHFile {
 
   constructor(path: string | null) {
     this.path = path;
-    if (path != null) {
-      const data = JSON.parse(fs.readFileSync(this.path!).toString());
-      this.curricula = data.curricula;
-    } else {
-      this.curricula = { name: "", data: [] };
-    }
+    this.curricula = { name: "", data: [] };
     this.modified = false;
     this.openTime = new Date();
     this.identifier = this.path ?? this.openTime.getTime().toString();
   }
 
-  load(): void {
-    const data = JSON.parse(fs.readFileSync(this.path!).toString());
+  async load() {
+    const data = JSON.parse((await fs.readTextFile(this.path!)).toString());
     this.curricula = data.curricula;
     this.modified = false;
   }
 
-  save(newpath: string | null = null): void {
+  async save(newpath: string | null = null) {
     if (newpath) this.path = newpath;
     this.modified = false;
-    fs.writeFileSync(this.path!, JSON.stringify({ curricula: this.curricula }));
+    await fs.writeTextFile(this.path!, JSON.stringify({ curricula: this.curricula }));
   }
 }

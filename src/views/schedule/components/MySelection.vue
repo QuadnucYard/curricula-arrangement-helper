@@ -51,6 +51,7 @@ const collapsed = reactive<{ [key: string]: boolean }>({});
 const state = ref(props.scheduler.getStateObject());
 
 const getStatus = (cd: ClassData) => {
+  // 这里可能获取null
   return state.value[ckey(cd)]!.status;
 };
 

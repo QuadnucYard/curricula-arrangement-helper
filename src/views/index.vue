@@ -17,6 +17,7 @@ import LeftMenu from "./components/LeftMenu.vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import TopTabs from "./components/TopTabs.vue";
 import MainMenu from "./components/MainMenu.vue";
+import { dialog } from "@tauri-apps/api";
 
 const router = useRouter();
 router.push({ name: "edit" });
@@ -38,38 +39,33 @@ onMounted(() => {
       .catch(() => {});
   });
 
-//   menu.value.on("open-file", async () => {
-//     const result = await remote.dialog.showOpenDialog({
-//       title: "打开文件",
-//       properties: ["openFile"],
-//       filters: [{ name: "CAH File", extensions: ["cah"] }],
-//     });
-//     console.log(result);
-//     if (!result.canceled && result.filePaths?.length > 0) {
-//       store.commit("openFile", { path: result.filePaths[0] });
-//       ElMessage.success("成功打开文件");
-//     }
-//   });
+  menu.value.on("open-file", async () => {
+    const selected = (await dialog.open({
+      multiple: false,
+      filters: [{ name: "CAH File", extensions: ["cah"] }],
+    })) as [string | null];
+    console.log(selected);
+    if (selected != null) {
+      store.commit("openFile", { path: selected });
+      ElMessage.success("成功打开文件");
+    }
+  });
 
-//   menu.value.on("save-file", async () => {
-//     const activeFile = store.state.activeFile;
-//     if (activeFile.path) {
-//       activeFile.save();
-//       ElMessage.success("成功保存文件");
-//     } else {
-//       const result = await remote.dialog.showSaveDialog({
-//         title: "保存",
-//         properties: ["openFile"],
-//         filters: [{ name: "CAH File", extensions: ["cah"] }],
-//         defaultPath: activeFile.curricula.name,
-//       });
-//       if (!result.canceled) {
-//         activeFile.save(result.filePath);
-//         ElMessage.success("成功保存文件");
-//       }
-//       console.log(result);
-//     }
-//   });
+  menu.value.on("save-file", async () => {
+    const activeFile = store.state.activeFile;
+    if (activeFile.path) {
+      activeFile.save();
+      ElMessage.success("成功保存文件");
+    } else {
+      const filePath = await dialog.save({
+        filters: [{ name: "CAH File", extensions: ["cah"] }],
+      });
+      if (filePath != null) {
+        activeFile.save(filePath);
+        ElMessage.success("成功保存文件");
+      }
+    }
+  });
 });
 </script>
 
