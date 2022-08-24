@@ -1,5 +1,11 @@
 <template>
-  <el-menu class="main-menu" mode="horizontal" menu-trigger="click" @select="handleSelect">
+  <el-menu
+    class="main-menu"
+    mode="horizontal"
+    menu-trigger="click"
+    unique-opened
+    @select="handleSelect"
+  >
     <el-sub-menu index="file" class="main-menu-sub" :popper-offset="0">
       <template #title>File</template>
       <el-menu-item index="new-file">New</el-menu-item>
@@ -33,19 +39,23 @@ defineExpose({ on });
 .main-menu {
   --el-menu-item-height: 20px;
   --el-menu-item-font-size: small;
+  user-select: none;
 }
 
 .el-sub-menu {
   --active-color: var(--text-color);
+  user-select: none;
 }
 
 .el-menu-item {
   --el-menu-item-font-size: small;
   --el-menu-horizontal-sub-item-height: 24px;
   --el-menu-active-color: var(--el-menu-text-color);
+  user-select: none;
 }
 
 .el-sub-menu__title {
-  border: none;
+  border-bottom: none !important;
+  --color: var(--el-text-color-primary) !important;
 }
 </style>

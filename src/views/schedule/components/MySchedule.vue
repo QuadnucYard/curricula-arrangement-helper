@@ -2,23 +2,19 @@
   <div style="margin: auto">
     <div class="title-block">
       <div class="center-block">
-        <div>{{ showTypeWeek ? "周课程表" : "学期课程表" }}</div>
+        <div>
+          <el-link :underline="false" @click="showTypeWeek = !showTypeWeek">
+            {{ showTypeWeek ? "周课程表" : "学期课程表" }}
+          </el-link>
+        </div>
+        <!-- <div>{{ showTypeWeek ? "周课程表" : "学期课程表" }}</div> -->
         <div v-if="showTypeWeek">
-          <el-button :icon="ArrowLeftBold" circle size="small" />
+          <el-button :icon="ArrowLeftBold" circle size="small" @click="--week" />
           <span>
             第 <b style="width: 1.2em">{{ week }}</b> 周
           </span>
-          <el-button :icon="ArrowRightBold" circle size="small" />
+          <el-button :icon="ArrowRightBold" circle size="small" @click="++week" />
         </div>
-      </div>
-      <div class="side-switch">
-        <el-switch
-          v-model="showTypeWeek"
-          inline-prompt
-          active-text="周课表"
-          inactive-text="学期课表"
-          width="6em"
-        />
       </div>
     </div>
     <table class="pure-table pure-table-bordered timetable">
@@ -59,8 +55,8 @@ import { Scheduler } from "@/data/schedule";
 const props = defineProps<{ scheduler: Scheduler }>();
 
 const showTypeWeek = ref(false);
-const showType = computed(() => (showTypeWeek ? "semester" : "week"));
-const week = ref(0);
+const showType = computed(() => (showTypeWeek.value ? "week" : "semester"));
+const week = ref(1);
 
 const selectedTpi = computed(() =>
   props.scheduler.selected.map(t => TeachingPlaceInfo.get(props.scheduler.state.get(t)!.item))
@@ -107,12 +103,12 @@ const getShow = (row: number, col: number) => {
     text-align: center;
     height: 3.5em;
 
-    div:nth-child(1) {
+    > div:nth-child(1) .el-link {
       margin-bottom: 0.5em;
-      color: var(--blue-dark);
+      --el-link-text-color: var(--blue-dark);
       font-size: large;
     }
-    div:nth-child(2) {
+    > div:nth-child(2) {
       color: var(--blue);
       .el-button {
         border-color: var(--blue);
@@ -137,7 +133,7 @@ const getShow = (row: number, col: number) => {
   border-collapse: collapse;
   td,
   th {
-    border: 1px solid #4a90d6;
+    border: 1px solid #4a90d67f;
   }
 }
 
