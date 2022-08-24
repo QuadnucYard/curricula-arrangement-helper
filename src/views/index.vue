@@ -52,6 +52,7 @@ onMounted(() => {
   });
 
   menu.value.on("save-file", async () => {
+    console.log("save");
     const activeFile = store.state.activeFile;
     if (activeFile.path) {
       activeFile.save();

@@ -57,12 +57,14 @@ export class Scheduler {
 
   /** 选择状态转换为存储用object */
   dump() {
-    return [...this.state.entries()]
-      .filter(([key, entry]) => entry.status == SelectionStatus.Selected)
-      .map(([key, entry]) => key);
+    return this.selected;
   }
 
-  load(arr: string[]) {}
+  load(arr: string[]) {
+    for (const s of arr) {
+      this.select(this.state.get(s)!.item);
+    }
+  }
 
   /** 直接设置状态 */
   setStatus(key: string, status: SelectionStatus) {

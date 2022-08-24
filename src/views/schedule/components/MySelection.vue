@@ -47,6 +47,8 @@ import { ElNotification } from "element-plus";
 
 const props = defineProps<{ src: CourseGroupData[]; scheduler: Scheduler }>();
 
+const emit = defineEmits(["change"]);
+
 const collapsed = reactive<{ [key: string]: boolean }>({});
 const state = ref(props.scheduler.getStateObject());
 
@@ -74,9 +76,11 @@ const onClickClassItem = (cd: ClassData) => {
   if (status === SelectionStatus.None || status == SelectionStatus.WeakConflict) {
     props.scheduler.select(cd);
     state.value = props.scheduler.getStateObject();
+    emit("change");
   } else if (status === SelectionStatus.Selected) {
     props.scheduler.unselect(cd);
     state.value = props.scheduler.getStateObject();
+    emit("change");
   } else {
     //ElMessage.warning("课程冲突！");
     const formatClassInfo = (cd: ClassData) => `${cd.name}-${cd.no}-${cd.teacher}`;

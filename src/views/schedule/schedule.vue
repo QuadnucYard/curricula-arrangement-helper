@@ -1,13 +1,17 @@
 <template>
   <div>
     <my-schedule class="my-schedule" :scheduler="scheduler" />
-    <my-selection class="my-selection" :src="file.curricula.data" :scheduler="scheduler" />
+    <my-selection
+      class="my-selection"
+      :src="file.curricula.data"
+      :scheduler="scheduler"
+      @change="onSelectionChange"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
 import { CAHFile } from "@/data/cah-file";
-import { TeachingPlaceInfo } from "@/data/course-info";
 import { Scheduler } from "@/data/schedule";
 import { useStore } from "vuex";
 import MySelection from "./components/MySelection.vue";
@@ -19,6 +23,11 @@ const file = computed(() => store.state.activeFile as CAHFile);
 
 const scheduler = reactive(new Scheduler());
 scheduler.create(file.value.curricula.data.flatMap(t => t.data));
+scheduler.load(file.value.scheduleSelection);
+
+const onSelectionChange = () => {
+  file.value.scheduleSelection = scheduler.dump();
+};
 </script>
 
 <style lang="scss">

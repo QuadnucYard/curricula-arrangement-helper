@@ -4,6 +4,7 @@ import { fs } from "@tauri-apps/api";
 export class CAHFile {
   path: string | null;
   curricula: CurriculumData;
+  scheduleSelection: string[] = [];
   modified: boolean;
   openTime: Date;
   identifier: string;
@@ -19,12 +20,16 @@ export class CAHFile {
   async load() {
     const data = JSON.parse((await fs.readTextFile(this.path!)).toString());
     this.curricula = data.curricula;
+    if (data.scheduleSelection) this.scheduleSelection = data.scheduleSelection;
     this.modified = false;
   }
 
   async save(newpath: string | null = null) {
     if (newpath) this.path = newpath;
     this.modified = false;
-    await fs.writeTextFile(this.path!, JSON.stringify({ curricula: this.curricula }));
+    await fs.writeTextFile(
+      this.path!,
+      JSON.stringify({ curricula: this.curricula, scheduleSelection: this.scheduleSelection })
+    );
   }
 }
