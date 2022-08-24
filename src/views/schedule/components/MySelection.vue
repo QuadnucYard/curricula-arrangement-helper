@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="width: 100%">
     <el-tabs type="border-card">
       <el-tab-pane v-for="(group, index) in src" :label="group.name" class="clist">
         <div v-for="courseItem in group.data" class="course-item">

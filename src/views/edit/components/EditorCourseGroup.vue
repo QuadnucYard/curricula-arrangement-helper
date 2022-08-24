@@ -1,5 +1,5 @@
 <template>
-  <div :key="refreshkey">
+  <div :key="refreshkey" style="margin-bottom: 1em">
     <editor-course-item
       v-for="(item, index) in pageData"
       :key="item.cid"

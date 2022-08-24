@@ -1,15 +1,14 @@
 <template>
   <div>
-    <div style="border: 2px solid #79bbff; border-radius: 10px; padding: 5px; margin: 0.5em">
+    <div class="options">
       <span>导入课程</span>
-      <el-button @click="onOpenInputRaw(1)">推荐课程</el-button>
-      <el-button @click="onOpenInputRaw(2)">体育课程</el-button>
-      <el-button @click="onOpenInputRaw(3)">通选课</el-button>
+      <el-button @click="onOpenInputRaw(true)">追加到当前组</el-button>
+      <el-button @click="onOpenInputRaw(false)">创建新组</el-button>
     </div>
   </div>
   <div>
-    <el-tabs type="border-card">
-      <el-tab-pane v-for="(group, index) in props.data" :label="group.name">
+    <el-tabs type="border-card" v-model="activeTab">
+      <el-tab-pane v-for="(group, index) in props.data" :name="index" :label="group.name">
         <editor-course-group
           :data="props.data[index].data"
           @change="onChange"
@@ -22,40 +21,39 @@
 
 <script setup lang="ts">
 import EditorCourseGroup from "./EditorCourseGroup.vue";
-import {
-  CourseData,
-  CourseGroupData,
-  parseTJKCRaw,
-  parseTYKCRaw,
-  parseXGKCRaw,
-} from "@/data/curriculum";
+import { CourseData, CourseGroupData, autoParse } from "@/data/curriculum";
 import { ElMessage, ElMessageBox } from "element-plus";
+import "@/utils/array-extensions";
 
 const props = defineProps<{ data: CourseGroupData[] }>();
 const emit = defineEmits(["update:data"]);
 
+const activeTab = ref(0);
+
 const addTab = (name: string, data: CourseData[] = []) => {
   props.data.push({ name, data });
+  activeTab.value = props.data.length - 1;
 };
 
-const onOpenInputRaw = (type: number) => {
-  ElMessageBox.prompt(`输入${["推荐", "体育", "通选"][type - 1]}课程JSON`, "导入课程", {
+const onOpenInputRaw = async (append: boolean) => {
+  ElMessageBox.prompt(`输入课程JSON`, "导入课程", {
     confirmButtonText: "OK",
     cancelButtonText: "Cancel",
     inputType: "textarea",
   })
-    .then(({ value }) => {
+    .then(async ({ value }) => {
       try {
-        switch (type) {
-          case 1:
-            addTab("推荐课程", parseTJKCRaw(JSON.parse(value)));
-            break;
-          case 2:
-            addTab("体育课程", parseTYKCRaw(JSON.parse(value)));
-            break;
-          case 3:
-            addTab("通选课", parseXGKCRaw(JSON.parse(value)));
-            break;
+        const parsedData = autoParse(JSON.parse(value));
+        if (!append) {
+          try {
+            const { value } = await ElMessageBox.prompt(`输入分组名称`, "", {
+              confirmButtonText: "OK",
+              cancelButtonText: "Cancel",
+            });
+            addTab(value, parsedData);
+          } catch {}
+        } else {
+          props.data[activeTab.value].data.addRange(parsedData);
         }
       } catch (e) {
         ElMessage.error("Fail to parse JSON text.\n" + e);
@@ -70,4 +68,15 @@ const onChange = () => {
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss" scoped>
+.options {
+  border: 2px solid #79bbff;
+  border-radius: 10px;
+  padding: 5px;
+  margin: 0.5em;
+
+  span {
+    margin-right: 1em;
+  }
+}
+</style>

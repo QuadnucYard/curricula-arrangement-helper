@@ -1,3 +1,5 @@
+import { castArray, chain, cloneDeep } from "lodash";
+
 /** 共用的基本数据 */
 export interface BaseClassData {
   /** 课程号 */
@@ -90,7 +92,7 @@ export function parseClassData(r: any): ClassData {
 }
 
 /** 解析推荐课程， */
-export function parseTJKC(obj: any[]): CourseData[] {
+export function parseGrouped(obj: any[]): CourseData[] {
   return obj.map(r => {
     const cd: CourseData = {
       cid: r.KCH,
@@ -106,16 +108,17 @@ export function parseTJKC(obj: any[]): CourseData[] {
   });
 }
 
-export function parseTJKCRaw(obj: any): CourseData[] {
-  return parseTJKC(obj.data.rows);
+function autoParseImpl(rows: any[]): CourseData[] {
+  if (rows.length == 0) return [];
+  if (rows[0].tcList) {
+    return parseGrouped(rows);
+  } else {
+    return groupCourseData(rows.map(t => toCourseData(parseClassData(t))));
+  }
 }
 
-export function parseTYKCRaw(obj: any): CourseData[] {
-  return parseTJKC(obj.data.rows);
-}
-
-export function parseXGKCRaw(obj: any): CourseData[] {
-  return (<any[]>obj.data.rows).map(t => toCourseData(parseClassData(t)));
+export function autoParse(obj: any): CourseData[] {
+  return autoParseImpl(obj.data?.rows ?? castArray(obj));
 }
 
 export function toBaseData(cd: BaseClassData): BaseClassData {
@@ -149,4 +152,18 @@ export function toCourseData(cd: ClassData): CourseData {
   return Object.assign(toBaseData(cd), {
     tcList: [cd],
   });
+}
+
+export function groupCourseData(cds: CourseData[]): CourseData[] {
+  return chain(cds)
+    .groupBy(t => t.cid)
+    .map(t =>
+      Object.assign(cloneDeep(t[0]), {
+        tcList: chain(t)
+          .map(u => u.tcList[0])
+          .sortBy(t => t.no)
+          .value(),
+      })
+    )
+    .value();
 }

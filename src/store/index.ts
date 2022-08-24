@@ -15,7 +15,7 @@ const store = createStore({
         return;
       }
       const newFile = new CAHFile(payload.path);
-      await newFile.load();
+      if (newFile.path) await newFile.load();
       if (payload.name) newFile.curricula.name = payload.name;
       state.activeFile = newFile;
       state.openFiles.push(newFile);
