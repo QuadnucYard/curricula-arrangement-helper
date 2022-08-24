@@ -1,7 +1,8 @@
 <template>
   <div>
-    <my-schedule class="my-schedule" :scheduler="scheduler" />
+    <my-schedule class="my-schedule" :scheduler="scheduler" @drop="onDropOnSchedule" />
     <my-selection
+      ref="mySelection"
       class="my-selection"
       :src="file.curricula.data"
       :scheduler="scheduler"
@@ -16,6 +17,7 @@ import { Scheduler } from "@/data/schedule";
 import { useStore } from "vuex";
 import MySelection from "./components/MySelection.vue";
 import MySchedule from "./components/MySchedule.vue";
+import { ClassData } from "@/data/curriculum";
 
 const store = useStore();
 
@@ -25,8 +27,15 @@ const scheduler = reactive(new Scheduler());
 scheduler.create(file.value.curricula.data.flatMap(t => t.data));
 scheduler.load(file.value.scheduleSelection);
 
+const mySelection = ref();
+
 const onSelectionChange = () => {
   file.value.scheduleSelection = scheduler.dump();
+};
+
+const onDropOnSchedule = (cd: ClassData) => {
+  mySelection.value.onClickClassItem(cd);
+  onSelectionChange();
 };
 </script>
 

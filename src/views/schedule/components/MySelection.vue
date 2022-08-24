@@ -96,6 +96,8 @@ const onClickClassItem = (cd: ClassData) => {
   }
   state.value = props.scheduler.getStateObject();
 };
+
+defineExpose({ onClickClassItem });
 </script>
 
 <style lang="scss" scoped>

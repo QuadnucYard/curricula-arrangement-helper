@@ -33,10 +33,14 @@
         <template v-for="j in _.range(7)">
           <template v-if="showType == 'week'">
             <td v-if="shouldShowAsEmpty(i, j)"></td>
-            <my-schedule-cell v-else :data="getShow(i, j) ?? null" />
+            <my-schedule-cell v-else :data="getShow(i, j) ?? null" @drop="emit('drop', $event)" />
           </template>
           <template v-else>
-            <my-schedule-cell :data="getShow(i, j) ?? null" :rowspan="i < 10 ? 5 : 3" />
+            <my-schedule-cell
+              :data="getShow(i, j) ?? null"
+              :rowspan="i < 10 ? 5 : 3"
+              @drop="emit('drop', $event)"
+            />
           </template>
         </template>
       </tr>
@@ -47,12 +51,13 @@
 <script setup lang="ts">
 import { ArrowLeftBold, ArrowRightBold } from "@element-plus/icons-vue";
 import { TeachingPlaceInfo } from "@/data/course-info";
-import { ClassData } from "@/data/curriculum";
 import MyScheduleCell from "./MyScheduleCell.vue";
 import _ from "lodash";
 import { Scheduler } from "@/data/schedule";
 
 const props = defineProps<{ scheduler: Scheduler }>();
+
+const emit = defineEmits(["drop"]);
 
 const showTypeWeek = ref(false);
 const showType = computed(() => (showTypeWeek.value ? "week" : "semester"));

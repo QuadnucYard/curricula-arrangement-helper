@@ -8,6 +8,7 @@
           'background-color': `hsl(${hue(item)}, 80%, 90%)`,
           'border-color': `hsl(${hue(item)}, 50%, 80%)`,
         }"
+        @dblclick="emit('drop', item.data)"
       >
         <p>{{ item.data.name }}-{{ item.data.no }}</p>
         <p>{{ item.raw[0] }}</p>
@@ -24,6 +25,8 @@ import { ClassSession } from "@/data/course-info";
 import { isArray } from "lodash";
 
 const props = defineProps<{ data: ClassSession | ClassSession[] | null; rowspan?: number }>();
+
+const emit = defineEmits(["drop"]);
 
 const getHashCode = (str: string) => {
   let hash = 1315423911;
