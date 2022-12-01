@@ -22,7 +22,7 @@
     "unplugin-icons": "^0.14.8",
     "unplugin-vue-components": "^0.22.4",
     "vite": "^3.0.8",
-    "vite-plugin-electron": "^0.9.0",
+    "vite-plugin-electron": "^0.10.4",
     "vue": "^3.2.37",
     "vue-tsc": "^0.40.1"
   },
